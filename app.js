@@ -163,7 +163,13 @@ function getTopBowlers() {
       map[p.n].seasons[yr] = { rank: i + 1, wkts: p.w };
     });
   });
-  return Object.values(map).sort((a, b) => Object.keys(b.seasons).length - Object.keys(a.seasons).length).slice(0, 15);
+  const sorted = Object.values(map).sort((a, b) => Object.keys(b.seasons).length - Object.keys(a.seasons).length);
+  const result = sorted.slice(0, 15);
+  // Ensure Bhuvneshwar Kumar is always visible (only back-to-back Purple Cap winner)
+  if (map['Bhuvneshwar Kumar'] && !result.find(p => p.name === 'Bhuvneshwar Kumar')) {
+    result.push(map['Bhuvneshwar Kumar']);
+  }
+  return result;
 }
 
 function getTeamPositions() {
